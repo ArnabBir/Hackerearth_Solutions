@@ -44,7 +44,7 @@ int main()
     	for(int i = 1; i < N; ++i){
     		dp[i] = D.at(i).getHeight();
     		cout<<"dp[i] = "<<dp[i]<<endl;
-    		for(int j = 0; j < i - 1; ++j){
+    		for(int j = 0; j < i; ++j){
     			if(D.at(i).getRadius() < D.at(j).getRadius() && D.at(j).getHeight() < D.at(j).getHeight()){
     				dp[i] = max(dp[i], dp[j] + D.at(i).getHeight()); 
     			}
