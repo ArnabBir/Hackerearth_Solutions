@@ -13,7 +13,6 @@ class Disk{
 			radius = r;
 			height = h;
 		}
-
 		long int getRadius(){ return radius;}
 		long int getHeight(){ return height;}
 		~Disk(){}
@@ -21,7 +20,7 @@ class Disk{
 
 bool compare(Disk a, Disk b)
 {
-  return ( a.getRadius() > b.getRadius() && a.getHeight() > b.getHeight());
+  return ( a.getRadius() > b.getRadius() );
 }
 
 int main()
@@ -34,22 +33,25 @@ int main()
     	vector<Disk> D;
     	for(int i = 0; i < N; ++i){
     		cin>>radius>>height;
-    		//cout<<radius<<" "<<height<<endl;
     		D.push_back(Disk(radius, height));
-    		//cout<<D.at(i).getRadius()<<" "<<D.at(i).getHeight()<<endl;
     	}
     	long long int * dp = new long long int[N];
     	sort(D.begin(), D.end(), compare); // reverse sort
+
     	dp[0] = D.at(0).getHeight();
     	for(int i = 1; i < N; ++i){
     		dp[i] = D.at(i).getHeight();
-    		cout<<"dp[i] = "<<dp[i]<<endl;
+    		
     		for(int j = 0; j < i; ++j){
-    			if(D.at(i).getRadius() < D.at(j).getRadius() && D.at(j).getHeight() < D.at(j).getHeight()){
-    				dp[i] = max(dp[i], dp[j] + D.at(i).getHeight()); 
+    			if((D.at(i).getRadius() < D.at(j).getRadius()) && (D.at(i).getHeight() < D.at(j).getHeight())){
+    				if (dp[i] < dp[j] + D.at(i).getHeight()){
+    					dp[i] = (dp[j] + D.at(i).getHeight());
+    				}
     			}
     		}
-    		dp[i]=max(dp[i],dp[i-1]);
+    		if(dp[i-1] > dp[i]){
+    			dp[i] = dp[i - 1];
+    		}
     	}
     	cout<<dp[N-1]<<endl;
     }
