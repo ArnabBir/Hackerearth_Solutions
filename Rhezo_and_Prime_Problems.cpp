@@ -17,18 +17,22 @@ vector<int> getPrime(int N){
     }
     return count;
 }
-            
+
 long long int getMaxpoints(int * A, int N, vector<int> count){
-	int temp_count = 1;
-	long long int max = A[0];
+	long long int maximum = A[0];
 	long long int * dp = new long long int[N];
 	dp[0] = A[0];
-	for(int i = 1; i < N; ++i){
-		dp[i] = dp[i - 1] + A[i];
-		++temp_count;
-		if(dp[i] > max && find(count.begin(), count.end(), temp_count) != count.end()) max = dp[i];
+	for(int i = 1; i < N; ++i) dp[i] = dp[i - 1] + A[i];
+	for(vector<int>::iterator itr = count.begin(); itr != count.end(); ++itr){
+		if(dp[*itr - 1] > maximum) { maximum = dp[*itr - 1];}
+		for(int i = 0; i + *itr < N; ++i ){
+			if (dp[i + *itr] - dp[i] > maximum){
+				maximum = (dp[i + *itr] - dp[i]);
+			}
+		}
 	}
-	return max;
+	
+	return maximum;
 }
 
 int main()
@@ -40,6 +44,7 @@ int main()
     	cin>>point[i];
     }
 	vector<int> count = getPrime(N);
+	reverse(count.begin(), count.end());
     cout<<getMaxpoints(point, N, count)<<endl;
     return 0;
 }
